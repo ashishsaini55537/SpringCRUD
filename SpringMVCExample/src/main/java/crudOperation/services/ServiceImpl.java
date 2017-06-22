@@ -23,26 +23,32 @@ public class ServiceImpl implements Service {
 	}
 	
 	
-	public List<User> saveUser(User user) {
+	public void saveUser(User user) {
 		
-		return userDAO.createUser(user);
+		userDAO.createUser(user);
 		
 	}
-	public List<User> updateUser(User user) {
+	public void updateUser(User user) {
 		
 		
-		 return userDAO.update(user);
+		 userDAO.update(user);
 	}
-	public List<User> deleteUser(String username) {
+	public void deleteUser(String username) {
 		
 		
-		 return userDAO.delete(username);
+		 userDAO.delete(username);
 		
 	}
 	public List<User> findUser(String username) {
 		
 		
 		return userDAO.findUser(username);
+		
+	}
+	
+	public List<User> showAll()
+	{
+		return userDAO.show();
 		
 	}
 

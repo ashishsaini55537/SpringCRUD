@@ -24,7 +24,7 @@ public class UserDAOImpl implements UserDAO {
 
 	int count = 1;
 
-	public List<User> createUser(User u) {
+	public void createUser(User u) {
 
 		System.out.println(u.getAge());
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -32,10 +32,6 @@ public class UserDAOImpl implements UserDAO {
 		System.out.println("executing query");
 		jdbcTemplate.update(sql, new Object[] { u.getUsername(), u.getEmail(), Integer.parseInt(u.getAge()),
 				Long.parseLong(u.getPhone()) });
-
-		List<User> list = showAll();
-
-		return list;
 
 	}
 
@@ -67,32 +63,26 @@ public class UserDAOImpl implements UserDAO {
 		// return null;
 	}
 
-	public List<User> update(User user) {
+	public void update(User user) {
 
 		String u = user.getUsername();
-		
-		List<User> list= delete(u);
-		list.clear();
-		list=createUser(user);
-		
-		return list;
-				
-		
+
+		delete(u);
+		createUser(user);
 
 	}
 
-	public List<User> delete(String username) {
+	public void delete(String username) {
 
 		// User temp= findUser(username);
 		String sql = "delete from user where username='" + username + "' LIMIT 1";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcTemplate.update(sql);
-		List<User> list = showAll();
-		return list;
+		
 
 	}
 
-	public List<User> showAll() {
+	public List<User> show() {
 		String sql = "select * from user";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 

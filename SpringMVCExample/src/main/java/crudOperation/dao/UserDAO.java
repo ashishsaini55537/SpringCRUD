@@ -6,12 +6,14 @@ import crudOperation.user.User;
 
 public interface UserDAO {
 
-	public List<User> createUser(User user);
+	public void createUser(User user);
 
 	public List<User> findUser(String username);
 
-	public List<User> update(User user);
+	public void update(User user);
 
-	public List<User> delete(String username);
+	public void delete(String username);
+	
+	public List<User> show();
 
 }

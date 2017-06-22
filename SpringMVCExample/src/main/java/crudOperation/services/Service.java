@@ -7,12 +7,14 @@ import crudOperation.user.User;
 
 public interface Service {
 	
-	public List<User> saveUser(User user);
+	public void saveUser(User user);
 	
-	public List<User> updateUser(User user);
+	public void updateUser(User user);
 	
-	public List<User> deleteUser(String username);
+	public void deleteUser(String username);
 	
 	public List<User> findUser(String username);
+	
+	public List<User> showAll();
 
 }

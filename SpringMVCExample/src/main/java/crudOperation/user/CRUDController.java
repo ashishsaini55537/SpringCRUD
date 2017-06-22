@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import crudOperation.services.Service;
 
 @Controller
-public class CreateUser {
+public class CRUDController {
 
 	@Autowired
 	Service service;
 
+	
+	
+	List<User> list= new ArrayList<User>();
+	List<String> error= new ArrayList<String>();
 	public Service getService() {
 		return service;
 	}
@@ -36,26 +40,36 @@ public class CreateUser {
 	@RequestMapping(value = "/jsp/createUser", method = RequestMethod.POST)
 	public String createUser(@ModelAttribute@Valid User user, BindingResult result, Model model) {
 
+		error.clear();
 		if (result.hasErrors()) {
 			
 			List<ObjectError> str =result.getAllErrors();
-			List<String> error= new ArrayList<String>();
+			
 			for(ObjectError m:str)
 			{
 				System.out.println(m.getDefaultMessage());
 				error.add(m.getDefaultMessage());
 			}
-			model.addAttribute("error",error);
+			
+			//model.addAttribute("error",error);
 			System.out.println(error);
-			return "error";
+			return "redirect:/jsp/error";
 		} else {
-			List<User> list = service.saveUser(user);
+			list.clear();
+		     service.saveUser(user);
 			// System.out.println(user.getPhone());
 			// System.out.println(map);
 			model.addAttribute("userMap", list);
-			return "index";
+			return "redirect:/users";
 		}
 
+	}
+	
+	@RequestMapping(value="/jsp/error")
+	public String error(Model model)
+	{
+		model.addAttribute("error",error);
+		return "register";
 	}
 
 	@RequestMapping(value = "/jsp/read/user/{id}", method = RequestMethod.GET)
@@ -78,15 +92,12 @@ public class CreateUser {
 	public String findUser(@PathVariable("id") String id, Model model) {
 		// User user=service.findUser(id);
 		//
-		List<User> list = service.findUser(id);
+		list.clear();
+		list = service.findUser(id);
 		User user = list.get(0);
-		if (user == null) {
-			model.addAttribute("username", id);
-			return "error";
-		} else {
+
 			model.addAttribute("user", user);
 			return "edit";
-		}
 		// return null;
 	}
 
@@ -94,21 +105,30 @@ public class CreateUser {
 	public String updateUser(@PathVariable("id") String id, @ModelAttribute User user, Model model) {
 
 		System.out.println("in update:" + id);
-		List<User> hash = service.updateUser(user);
-		model.addAttribute("userMap", hash);
+		 service.updateUser(user);
+		//model.addAttribute("userMap", hash);
 
-		return "index";
+		return "redirect:/users";
 	}
 
 	@RequestMapping(value = "/jsp/delete/user/{id}", method = RequestMethod.GET)
 	public String deleteUser(@PathVariable("id") String id, Model model) {
 
-		List<User> hs = service.deleteUser(id);
-		System.out.println("delete:" + hs);
-		model.addAttribute("userMap", hs);
-		return "index";
+		list.clear();
+		service.deleteUser(id);
+		//System.out.println("delete:" + hs);
+		//model.addAttribute("userMap", hs);
+		return "redirect:/users";
 	}
 
+	@RequestMapping(value="/users")
+	public String displayAll(Model model)
+	{
+		list=service.showAll();
+		model.addAttribute("userMap",list);
+		return "index";
+		
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public String handleException(Model model,Exception ex)
@@ -116,5 +136,7 @@ public class CreateUser {
 		model.addAttribute("error",ex.toString());
 		return "error";
 	}
+	
+	
 	
 }
