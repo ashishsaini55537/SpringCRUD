@@ -17,7 +17,7 @@
 			if (request.getAttribute("user") != null) {
 				User user = (User) request.getAttribute("user");
 		%>
-		<form action="/SpringMVCExample/jsp/update/user/<%=user.getUsername()%>" method="post">
+		<form action="/SpringMVCJava/jsp/update/user/<%=user.getUsername()%>" method="post">
 			Username :<input type="text" name="username"
 				value="<%=user.getUsername()%>" readonly="readonly"><br>
 			<br> Email :<input type="text" name="email"

@@ -1,18 +1,11 @@
 package crudOperation.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import crudOperation.user.User;
 
@@ -89,12 +82,14 @@ public class UserDAOImpl implements UserDAO {
 
 	public void delete(String username) {
 
-		// User temp= findUser(username);
+		 List<User> temp= findUser(username);
 //		String sql = "delete from user where username='" + username + "' LIMIT 1";
 //		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 //		jdbcTemplate.update(sql);
 		
-		entityManager.remove(username);
+		System.out.println("in delete");
+		System.out.println(username);
+		entityManager.remove(temp.get(0));
 
 	}
 
